@@ -60,6 +60,15 @@ namespace ErrorList {
             }
         }
 
+        public bool NotesVisible {
+            get {
+                return tglBtnNotes.IsChecked.HasValue && tglBtnNotes.IsChecked.Value;
+            }
+            set {
+                tglBtnNotes.IsChecked = value;
+            }
+        }
+
         public void ClearAll() {
             _dataContext.ErrorListData = new ObservableCollection<ErrorListDataEntry>();
         }
@@ -74,6 +83,10 @@ namespace ErrorList {
 
         public void AddInformation(string description) {
             _dataContext.AddInformation(description);
+        }
+
+        public void AddNote(string description) {
+            _dataContext.AddNote(description);
         }
 
         #endregion IErrorListReporter
@@ -110,12 +123,23 @@ namespace ErrorList {
             _dataContext.ShowInformations = tgl.IsChecked.HasValue && tgl.IsChecked.Value;
         }
 
+        private void Notes_Checked(object sender, System.Windows.RoutedEventArgs e) {
+            ToggleButton tgl = (ToggleButton)sender;
+            _dataContext.ShowNotes = tgl.IsChecked.HasValue && tgl.IsChecked.Value;
+        }
+
+        private void Notes_Unchecked(object sender, System.Windows.RoutedEventArgs e) {
+            ToggleButton tgl = (ToggleButton)sender;
+            _dataContext.ShowNotes = tgl.IsChecked.HasValue && tgl.IsChecked.Value;
+        }
+
         #endregion EventHandlers
 
         private void SetTextBoxBindings() {
             txtErrors.DataContext = _dataContext;
             txtWarnings.DataContext = _dataContext;
             txtMessages.DataContext = _dataContext;
+            txtNotes.DataContext = _dataContext;
         }
     }
 }

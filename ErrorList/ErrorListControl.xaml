@@ -46,6 +46,13 @@
                             <TextBlock HorizontalAlignment="Left" Name="txtMessages" VerticalAlignment="Center" Text="{Binding Path=InformationsText, FallbackValue='3 Informations'}" />
                         </StackPanel>
                     </ToggleButton>
+                    <Border BorderBrush="DarkGray" Width="1" Height="20" BorderThickness="1" />
+                    <ToggleButton x:Name="tglBtnNotes" Unchecked="Notes_Unchecked" Margin="2,0,0,0" Height="24" Checked="Notes_Checked" IsChecked="True" ToolBar.OverflowMode="Never" Style="{DynamicResource ToggleButtonStyleOrange}">
+                        <StackPanel Orientation="Horizontal" Margin="2,0,2,0">
+                            <Image Source="Resources\Images\NoteGray.png" Width="16" Height="16" Margin="0,0,5,0" />
+                            <TextBlock HorizontalAlignment="Left" Name="txtNotes" VerticalAlignment="Center" Text="{Binding Path=NotesText, FallbackValue='5 Notes'}" />
+                        </StackPanel>
+                    </ToggleButton>
                 </StackPanel>
             </Border>
 

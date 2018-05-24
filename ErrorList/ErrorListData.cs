@@ -8,7 +8,8 @@ namespace ErrorList {
     public enum ErrorListLevel {
         Error,
         Warning,
-        Information
+        Information,
+        Note,
     }
 
     public class ErrorListDataModel : INotifyPropertyChanged {
@@ -21,17 +22,20 @@ namespace ErrorList {
             this.AddError("Error unable to do something \"Name: Write PHP\", because the syntax is so looooooooooong");
             this.AddError("Error unable to do something \"Name: Write Flash\"");
             this.AddWarning("Error unable to do something \"Name: Program in F#, yet\"");
-            this.AddInformation("Note: I need a better hobby than wasting my lunch coding..");
+            this.AddInformation("Info: your wasting your lunch coding..");
+            this.AddNote("Note: I need a better hobby than wasting my lunch coding..");
 
             this.AddError("Error unable to do something \"Name: Write PHP\", because the syntax is so looooooooooong");
             this.AddError("Error unable to do something \"Name: Write Flash\"");
             this.AddWarning("Error unable to do something \"Name: Program in F#, yet\"");
-            this.AddInformation("Note: I need a better hobby than wasting my lunch coding..");
+            this.AddInformation("Info: your wasting your lunch coding..");
+            this.AddNote("Note: I need a better hobby than wasting my lunch coding..");
 
             this.AddError("Error unable to do something \"Name: Write PHP\", because the syntax is so looooooooooong");
             this.AddError("Error unable to do something \"Name: Write Flash\"");
             this.AddWarning("Error unable to do something \"Name: Program in F#, yet\"");
-            this.AddInformation("Note: I need a better hobby than wasting my lunch coding..");
+            this.AddInformation("Info: your wasting your lunch coding..");
+            this.AddNote("Note: I need a better hobby than wasting my lunch coding..");
             //}
 #endif
         }
@@ -54,6 +58,12 @@ namespace ErrorList {
             }
         }
 
+        public string NotesText {
+            get {
+                return string.Format("{0} Notes", _errorListData.Count(ed => ed.Level == ErrorListLevel.Note));
+            }
+        }
+
         public void AddError(string description) {
             _errorListData.Add(new ErrorListDataEntry { Description = description, Level = ErrorListLevel.Error });
             SetView();
@@ -66,6 +76,11 @@ namespace ErrorList {
 
         public void AddInformation(string description) {
             _errorListData.Add(new ErrorListDataEntry { Description = description, Level = ErrorListLevel.Information });
+            SetView();
+        }
+
+        public void AddNote(string description) {
+            _errorListData.Add(new ErrorListDataEntry { Description = description, Level = ErrorListLevel.Note });
             SetView();
         }
 
@@ -100,6 +115,13 @@ namespace ErrorList {
             }
         }
 
+        public bool ShowNotes {
+            set {
+                _showNotes = value;
+                SetView();
+            }
+        }
+
         #region INotifyPropertyChanged Members
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -114,6 +136,8 @@ namespace ErrorList {
                 selectedLevels.Add(ErrorListLevel.Warning);
             if (_showInformations)
                 selectedLevels.Add(ErrorListLevel.Information);
+            if (_showNotes)
+                selectedLevels.Add(ErrorListLevel.Note);
 
             _errorListDataView.Clear();
             var selectedErrors = _errorListData.Where(ed => selectedLevels.Contains(ed.Level));
@@ -124,6 +148,7 @@ namespace ErrorList {
                 PropertyChanged(this, new PropertyChangedEventArgs("ErrorsText"));
                 PropertyChanged(this, new PropertyChangedEventArgs("WarningsText"));
                 PropertyChanged(this, new PropertyChangedEventArgs("InformationsText"));
+                PropertyChanged(this, new PropertyChangedEventArgs("NotesText"));
             }
         }
 
@@ -133,6 +158,7 @@ namespace ErrorList {
         private bool _showErrors = true;
         private bool _showWarnings = true;
         private bool _showInformations = true;
+        private bool _showNotes = true;
     }
 
     public class ErrorListDataEntry {
@@ -154,6 +180,10 @@ namespace ErrorList {
                     case ErrorListLevel.Information:
                         this.ErrorIconSrc = InformationIconRelPath;
                         break;
+
+                    case ErrorListLevel.Note:
+                        this.ErrorIconSrc = NoteIconRelPath;
+                        break;
                 }
             }
         }
@@ -165,5 +195,6 @@ namespace ErrorList {
         private const string ErrorIconRelPath = "./Resources/Images/Error.png";
         private const string WarningIconRelPath = "./Resources/Images/Warning.png";
         private const string InformationIconRelPath = "./Resources/Images/Information.png";
+        private const string NoteIconRelPath = "./Resources/Images/NoteGray.png";
     }
 }

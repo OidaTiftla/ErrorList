@@ -15,7 +15,8 @@ namespace ErrorListTest {
             errorList.AddError("Error unable to do something \"Name: Write PHP\"");
             errorList.AddError("Error unable to do something \"Name: Write Flash\"");
             errorList.AddWarning("Error unable to do something \"Name: Program in F#, yet\"");
-            errorList.AddInformation("Note: I need a better hobby than wasting my lunch coding..");
+            errorList.AddInformation("Info: your wasting your lunch coding..");
+            errorList.AddNote("Note: I need a better hobby than wasting my lunch coding..");
         }
 
         private void BtnRemoveSampleData_OnClick(object sender, RoutedEventArgs e) {
