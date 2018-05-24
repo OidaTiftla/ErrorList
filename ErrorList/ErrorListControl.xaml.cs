@@ -51,12 +51,12 @@ namespace ErrorList {
             }
         }
 
-        public bool MessagesVisible {
+        public bool InformationsVisible {
             get {
-                return tglBtnMessages.IsChecked.HasValue && tglBtnMessages.IsChecked.Value;
+                return tglBtnInformations.IsChecked.HasValue && tglBtnInformations.IsChecked.Value;
             }
             set {
-                tglBtnMessages.IsChecked = value;
+                tglBtnInformations.IsChecked = value;
             }
         }
 
@@ -138,7 +138,7 @@ namespace ErrorList {
         private void SetTextBoxBindings() {
             txtErrors.DataContext = _dataContext;
             txtWarnings.DataContext = _dataContext;
-            txtMessages.DataContext = _dataContext;
+            txtInformations.DataContext = _dataContext;
             txtNotes.DataContext = _dataContext;
         }
     }

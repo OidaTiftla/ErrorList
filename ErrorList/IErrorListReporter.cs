@@ -7,7 +7,7 @@ namespace ErrorList {
 
         bool ErrorsVisible { get; set; }
         bool WarningsVisible { get; set; }
-        bool MessagesVisible { get; set; }
+        bool InformationsVisible { get; set; }
 
         void ClearAll();
 
