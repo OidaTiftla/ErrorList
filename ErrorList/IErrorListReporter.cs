@@ -8,13 +8,16 @@ namespace ErrorList {
         bool ErrorsVisible { get; set; }
         bool WarningsVisible { get; set; }
         bool InformationsVisible { get; set; }
+        bool NotesVisible { get; set; }
 
         void ClearAll();
 
         void AddError(string description);
 
+        void AddWarning(string description);
+
         void AddInformation(string description);
 
-        void AddWarning(string description);
+        void AddNote(string description);
     }
 }
