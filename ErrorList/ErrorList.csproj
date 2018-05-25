@@ -51,7 +51,9 @@
       <DependentUpon>ErrorListControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="ErrorListData.cs" />
-    <Compile Include="IErrorListReporter.cs" />
+    <Compile Include="IMessageItem.cs" />
+    <Compile Include="MessageItem.cs" />
+    <Compile Include="ObservableExtension.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

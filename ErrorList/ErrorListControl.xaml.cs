@@ -5,13 +5,37 @@
  *
  */
 
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
+using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 
 namespace ErrorList {
 
-    public partial class ErrorListControl : IErrorList {
+    public partial class ErrorListControl {
         private readonly ErrorListDataModel _dataContext = new ErrorListDataModel();
+
+        #region properties
+
+        public IEnumerable<IMessageItem> Items { get { return (IEnumerable<IMessageItem>)GetValue(ItemsProperty); } set { SetValue(ItemsProperty, value); } }
+
+        public static readonly DependencyProperty ItemsProperty = DependencyProperty.Register(nameof(Items), typeof(IEnumerable<IMessageItem>), typeof(ErrorListControl), new FrameworkPropertyMetadata(null, (s, e) => {
+            var t = (ErrorListControl)s;
+            t._dataContext.Items = e.NewValue as IEnumerable<IMessageItem>;
+        }));
+
+        public IMessageItem SelectedItem { get { return (IMessageItem)GetValue(SelectedItemProperty); } set { SetValue(SelectedItemProperty, value); } }
+        public static readonly DependencyProperty SelectedItemProperty = DependencyProperty.Register(nameof(SelectedItem), typeof(IMessageItem), typeof(ErrorListControl), new FrameworkPropertyMetadata());
+
+        public IEnumerable<IMessageItem> SelectedItems { get { return (IEnumerable<IMessageItem>)GetValue(SelectedItemsProperty); } set { SetValue(SelectedItemsProperty, value); } }
+        public static readonly DependencyProperty SelectedItemsProperty = DependencyProperty.Register(nameof(SelectedItems), typeof(IEnumerable<IMessageItem>), typeof(ErrorListControl), new FrameworkPropertyMetadata());
+
+        public DataGridSelectionMode SelectionMode { get { return (DataGridSelectionMode)GetValue(SelectionModeProperty); } set { SetValue(SelectionModeProperty, value); } }
+        public static readonly DependencyProperty SelectionModeProperty = DependencyProperty.Register(nameof(SelectionMode), typeof(DataGridSelectionMode), typeof(ErrorListControl), new FrameworkPropertyMetadata(DataGridSelectionMode.Single));
+
+        #endregion properties
 
         public ErrorListControl() {
             InitializeComponent();
@@ -19,77 +43,6 @@ namespace ErrorList {
             dgv.DataContext = _dataContext;
             SetTextBoxBindings();
         }
-
-        #region IErrorListReporter
-
-        public ObservableCollection<ErrorListDataEntry> DataBindingContext {
-            get { return _dataContext.ErrorListData; }
-            set {
-                if (value == null) {
-                    throw new System.ArgumentNullException("Unable to bind to a null reference");
-                }
-
-                _dataContext.ErrorListData = value;
-            }
-        }
-
-        public bool ErrorsVisible {
-            get {
-                return tglBtnErrors.IsChecked.HasValue && tglBtnErrors.IsChecked.Value;
-            }
-            set {
-                tglBtnErrors.IsChecked = value;
-            }
-        }
-
-        public bool WarningsVisible {
-            get {
-                return tglBtnWarnings.IsChecked.HasValue && tglBtnWarnings.IsChecked.Value;
-            }
-            set {
-                tglBtnWarnings.IsChecked = value;
-            }
-        }
-
-        public bool InformationsVisible {
-            get {
-                return tglBtnInformations.IsChecked.HasValue && tglBtnInformations.IsChecked.Value;
-            }
-            set {
-                tglBtnInformations.IsChecked = value;
-            }
-        }
-
-        public bool NotesVisible {
-            get {
-                return tglBtnNotes.IsChecked.HasValue && tglBtnNotes.IsChecked.Value;
-            }
-            set {
-                tglBtnNotes.IsChecked = value;
-            }
-        }
-
-        public void ClearAll() {
-            _dataContext.ErrorListData = new ObservableCollection<ErrorListDataEntry>();
-        }
-
-        public void AddError(string description) {
-            _dataContext.AddError(description);
-        }
-
-        public void AddWarning(string description) {
-            _dataContext.AddWarning(description);
-        }
-
-        public void AddInformation(string description) {
-            _dataContext.AddInformation(description);
-        }
-
-        public void AddNote(string description) {
-            _dataContext.AddNote(description);
-        }
-
-        #endregion IErrorListReporter
 
         #region EventHandlers
 
@@ -131,6 +84,32 @@ namespace ErrorList {
         private void Notes_Unchecked(object sender, System.Windows.RoutedEventArgs e) {
             ToggleButton tgl = (ToggleButton)sender;
             _dataContext.ShowNotes = tgl.IsChecked.HasValue && tgl.IsChecked.Value;
+        }
+
+        private void dgv_SelectedCellsChanged(object sender, SelectedCellsChangedEventArgs e) {
+            var collection = this.SelectedItems as ObservableCollection<IMessageItem>;
+            if (collection is null) {
+                collection = new ObservableCollection<IMessageItem>();
+            }
+
+            var selectedItems = this.dgv.SelectedCells
+                .Select(x => x.Item)
+                .OfType<IMessageItem>()
+                .Distinct()
+                .ToList();
+
+            var removed = collection.Except(selectedItems).ToList();
+            var added = selectedItems.Except(collection).ToList();
+
+            foreach (var item in removed) {
+                collection.Remove(item);
+            }
+            foreach (var item in added) {
+                collection.Add(item);
+            }
+
+            this.SelectedItems = collection;
+            this.SelectedItem = collection.FirstOrDefault();
         }
 
         #endregion EventHandlers
