@@ -19,7 +19,13 @@
         </Border>
 
         <Grid>
-            <errorList:ErrorListControl x:Name="errorList" Margin="5" />
+            <errorList:ErrorListControl x:Name="errorList" Margin="5">
+                <errorList:ErrorListControl.ItemContextMenu>
+                    <ContextMenu>
+                        <MenuItem Header="Click Me" />
+                    </ContextMenu>
+                </errorList:ErrorListControl.ItemContextMenu>
+            </errorList:ErrorListControl>
         </Grid>
     </DockPanel>
 </Window>

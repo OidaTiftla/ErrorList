@@ -35,6 +35,9 @@ namespace ErrorList {
         public DataGridSelectionMode SelectionMode { get { return (DataGridSelectionMode)GetValue(SelectionModeProperty); } set { SetValue(SelectionModeProperty, value); } }
         public static readonly DependencyProperty SelectionModeProperty = DependencyProperty.Register(nameof(SelectionMode), typeof(DataGridSelectionMode), typeof(ErrorListControl), new FrameworkPropertyMetadata(DataGridSelectionMode.Single));
 
+        public ContextMenu ItemContextMenu { get { return (ContextMenu)GetValue(ItemContextMenuProperty); } set { SetValue(ItemContextMenuProperty, value); } }
+        public static readonly DependencyProperty ItemContextMenuProperty = DependencyProperty.Register(nameof(ItemContextMenu), typeof(ContextMenu), typeof(ErrorListControl), new FrameworkPropertyMetadata());
+
         #endregion properties
 
         public ErrorListControl() {
