@@ -1,7 +1,7 @@
 ﻿namespace ErrorList {
 
     public class MessageItem : IMessageItem {
-        public string Description { get; set; }
-        public ErrorListLevel Level { get; set; }
+        public virtual string Description { get; set; }
+        public virtual ErrorListLevel Level { get; set; }
     }
 }
