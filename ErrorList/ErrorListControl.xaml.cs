@@ -90,7 +90,7 @@ namespace ErrorList {
         }
 
         private void dgv_SelectedCellsChanged(object sender, SelectedCellsChangedEventArgs e) {
-            var collection = this.SelectedItems as ObservableCollection<IMessageItem>;
+            var collection = this.SelectedItems as ICollection<IMessageItem>;
             if (collection is null) {
                 collection = new ObservableCollection<IMessageItem>();
             }
