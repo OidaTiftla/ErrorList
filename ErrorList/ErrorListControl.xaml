@@ -91,16 +91,16 @@
                                             <Style TargetType="{x:Type Image}">
                                                 <Style.Triggers>
                                                     <DataTrigger Binding="{Binding Level}" Value="Error">
-                                                        <Setter Property="Source" Value="./Resources/Images/Error.png"/>
+                                                        <Setter Property="Source" Value="./Resources/Images/Error.png" />
                                                     </DataTrigger>
                                                     <DataTrigger Binding="{Binding Level}" Value="Warning">
-                                                        <Setter Property="Source" Value="./Resources/Images/Warning.png"/>
+                                                        <Setter Property="Source" Value="./Resources/Images/Warning.png" />
                                                     </DataTrigger>
                                                     <DataTrigger Binding="{Binding Level}" Value="Information">
-                                                        <Setter Property="Source" Value="./Resources/Images/Information.png"/>
+                                                        <Setter Property="Source" Value="./Resources/Images/Information.png" />
                                                     </DataTrigger>
                                                     <DataTrigger Binding="{Binding Level}" Value="Note">
-                                                        <Setter Property="Source" Value="./Resources/Images/NoteGray.png"/>
+                                                        <Setter Property="Source" Value="./Resources/Images/NoteGray.png" />
                                                     </DataTrigger>
                                                 </Style.Triggers>
                                             </Style>
