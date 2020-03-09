@@ -8,6 +8,18 @@ namespace ErrorList {
 
     public class ErrorListDataModel : INotifyPropertyChanged {
 
+        #region events
+
+        public delegate void MessagesAddedHandler();
+
+        public event MessagesAddedHandler MessagesAdded;
+
+        protected void OnMessagesAdded() {
+            this.MessagesAdded?.Invoke();
+        }
+
+        #endregion events
+
         public IEnumerable<IMessageItem> Items {
             get { return this._errorListData; }
             set {
@@ -109,6 +121,9 @@ namespace ErrorList {
             }
             foreach (var item in added) {
                 _errorListDataView.AddSorted(item, x => selectedErrors.IndexOf(x));
+            }
+            if (added.Any()) {
+                this.OnMessagesAdded();
             }
 
             if (PropertyChanged != null) {

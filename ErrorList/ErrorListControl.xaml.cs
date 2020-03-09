@@ -38,6 +38,9 @@ namespace ErrorList {
         public ContextMenu ItemContextMenu { get { return (ContextMenu)GetValue(ItemContextMenuProperty); } set { SetValue(ItemContextMenuProperty, value); } }
         public static readonly DependencyProperty ItemContextMenuProperty = DependencyProperty.Register(nameof(ItemContextMenu), typeof(ContextMenu), typeof(ErrorListControl), new FrameworkPropertyMetadata());
 
+        public bool AutoScrollToEndIfMessageIsAdded { get { return (bool)GetValue(AutoScrollToEndIfMessageIsAddedProperty); } set { SetValue(AutoScrollToEndIfMessageIsAddedProperty, value); } }
+        public static readonly DependencyProperty AutoScrollToEndIfMessageIsAddedProperty = DependencyProperty.Register(nameof(AutoScrollToEndIfMessageIsAdded), typeof(bool), typeof(ErrorListControl), new FrameworkPropertyMetadata(false));
+
         #endregion properties
 
         public ErrorListControl() {
@@ -45,6 +48,13 @@ namespace ErrorList {
 
             dgv.DataContext = _dataContext;
             SetTextBoxBindings();
+
+            _dataContext.MessagesAdded += () => {
+                if (this.AutoScrollToEndIfMessageIsAdded) {
+                    var last = _dataContext.ErrorListData?.LastOrDefault();
+                    dgv.ScrollIntoView(last);
+                }
+            };
         }
 
         #region EventHandlers
